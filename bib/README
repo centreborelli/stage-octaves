@@ -1,0 +1,98 @@
+Commentaires sur la bibliographie
+---------------------------------
+
+La motivation principale pour cet stage est le chapitre 1 de "Tuning, Timbre,
+Spectrum, Scale (Sethares 2004)", où le concept d'octave dissonante est
+proposé.  Je vous conseille de lire ce premier chapitre (10 pages très
+légères), et écouter le fichier ci-joint "challoct.mp3" correspondant a la
+partition de la Figure 1.1.
+
+Le livre de Sethares décrit largement les possibilités musicales des
+instruments avec timbres non-harmoniques, mais il ne s'intéresse pas du tout à
+la modélisation physique de ces instruments : presque tous les exemples sont
+avec sons synthétiques.   Une bonne introduction à la modélisation mathématique
+d'instruments musicaux est le chapitre 3 de "Music, A Mathematical Offering
+(Benson 2008)".  Nous allons nous appuyer très fortement sur ce chapitre.  Je
+vous conseille de lire en diagonal le chapitre entier, puis en détail les
+sections sur la corde pincée, le tambour et le xylophone.  La section 3.7 sur
+le spectre du Laplacien est fondamentale pour notre travail.
+
+L'article "Can One Hear The Shape of a Drum (Kac 1966)" est énormément célèbre
+et il marque le début de la tradition moderne de modélisation spectrale.  Il
+faut le connaître, simplement par culture mathématique générale.  Le traitement
+mathématique du tambour n'est pas particulièrement lisible.  Je vous conseille
+de lire l'introduction historique (sections 1 à 4) et ignorer le reste.
+
+L'article de Kac et le livre de Benson traitent le problème des vibrations d'un
+milieu continu, en utilisant une EDP linéaire: l'équation d'ondes.  En
+pratique, si on veut faire des simulations par ordinateur, il faut travailler
+dans un domaine discret: l'EDP discrétisée devient un système linéaire d'EDO
+qui se résout par algèbre linéaire, explicitement en calculant l'exponentielle
+d'une matrice (ce qui requiert le calcul de son spectre).  L'article
+"Isospectralization (Cosmo et al. 2019)" traite le problème inverse du spectre
+discret.  Après modélisation du problème direct, le problème inverse est résolu
+par minimisation d'une fonction de coût en utilisant des techniques modernes
+d'optimisation (backtracking et descente de gradient stochastique avec
+Tensorflow/Adam).  Même si ce stage a un objectif différent que l'article
+"Isospectraliszation", nous pouvons utiliser essentiellement la même technique.
+Un fort avantage de cet article est que un des auteurs est étudiant de thèse à
+l'X, et on pourrait le contacter facilement (enfin, si on n'était pas
+confinés).  Cet article est donc la référence de base pour cet stage, et il
+faudra le lire en détail et le maitriser complètement.
+
+La discrétisation du corps vibrant proposée dans "Isospectralization" n'est pas
+la seule possible.  C'est ce que l'on appelle la modélisation "Lagrangienne" où
+les éléments discrets correspondent à des parties solidaires avec la forme de
+l'objet.  Pour changer la forme de l'objet on change alors la longueur des
+liens du maillage.  Une autre possibilité est la modélisation "Eulerienne", où
+les éléments discrets correspondent à des points *fixes* de l'espace, et
+l'objet est décrit par sa fonction indicatrice échantillonnée sur ces positions
+(i.e., une image binaire).  Dans les deux cas, le Laplacien a une forme
+algébrique très similaire, mais les erreurs dûs a la discrétisation sont
+souvent d'une nature très différente.  Il nous faudra peut être explorer ces
+deux discrétisations.  Je n'ai pour l'instant aucune référence appropriée pour
+la discrétisation Eulerienne, mais on peut en trouver facilement.
+
+L'article "Computational design of metallophone contact sounds (Bharaj et al.
+2015)" décrit la construction effective d'un glockenspiel avec un spectre
+pre-fixé.  L'article est assez imprécis avec les détails, mais c'est un bon
+complement de "Isospectralization", surtout parce qu'il traite exactement le
+même problème que nous.  À noter que cet article décrit essentiellement un cas
+d'échec: leur méthode d'optimisation n'arrivent que à fixer seulement deux
+vecteurs propres: la fréquence fondamentale (ce qui se fait par une homothétie
+globale de l'objet) et le premier partiel.  Dans notre stage on doit faire une
+optimisation un peu plus puissante qui nous permet de fixer au moins 3 ou 4
+partiels.  À mon avis, c'est bien possible que nous y réussissons: la méthode
+d'optimisation décrite dans l'article du glockenspiel est très primitif: une
+simple descente de gradient d'une fonction coût évaluée numériquement.  Nous
+pourrons faire bien meilleur!
+
+Un autre article de vulgarisation qui traite le même problème est "Can one
+shape the sound of a drum (Crawford 2016)".  Vous pouvez le lire pour vous
+inspirer, mais il n'est pas très ambitieux.  Il rajoute des symétries pour
+simplifier le problème et le rendre 1-dimensionnel: il suppose un tambour
+circulaire avec un profil radial de densité f(r), et il calcule le spectre en
+fonction de f, ce qui revient à des équations ordinaires sur "f".
+
+Finalement, il y a le livre de texte de Chu et Golub "Inverse eigenvalue
+problems" (2003). qui décrit le problème du point de vue mathématique.  Il
+s'intéresse surtout aux questions d'existence et unicité, plutôt que aux
+méthodes de solution.  Pour l'instant, je ne vous conseille pas de le lire,
+mais il faut savoir qu'il existe, et peut être on l'utilisera comme référence.
+Notamment, il y a une taxonomie de problèmes spectraux inverses et il faudra
+identifier de quel type est le nôtre.
+
+Les autres références concernent des cas particuliers de modélisation
+d'instruments, souvent dans un cadre très limité, mais avec des applications
+réelles.  Par exemple, "The logical clarinet (Noreland et al. 2002)" trouve une
+nouvelle distribution de positions et tailles des trous d'une clarinette de
+façon que la doigtée des notes devient régulière (on découvre le dernier trou
+pour monter un demi-ton).  L'article "The design of bells with harmonic
+overtones (McLachlan et al. 2003)" optimise la forme d'une cloche pour avoir un
+spectre harmonique.  L'optimisation se fait par une méthode couteuse et
+imprécise par différences finies (aidée sans doute par la symétrie radiale de
+la forme).  Vous verrez que, peu importe le type d'instrument, la modélisation
+du problème direct est toujours la même: on résout l'équation d'ondes linéaire;
+la seule chose qui change est la condition de bord, qui devient différente
+selon si l'instrument est une membrane vibrante attachée aux bords, un objet
+solide flottant dans le vide, ou l'air dans une cavité de forme fixe.
