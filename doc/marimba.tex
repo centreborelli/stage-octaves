@@ -76,11 +76,11 @@ end
 \begin{verbatim}
 # try the code above
 w = 128;
-M = rbar_image(.9, .4,  .5, .4,  1, pi/2,   w);
-imwrite(M, "bar.png")
+M = rbar_image(.9, .4,  .5, .4,  1, pi/3,   w);
+imwrite(M, "f/bar.png")
 \end{verbatim}
 
-\includegraphics{bar.png}\verb+bar.png+
+\includegraphics{f/bar.png}\verb+bar.png+
 
 \begin{verbatim}
 # build the incidence matrix of a grid graph
@@ -92,18 +92,16 @@ end
 \end{verbatim}
 
 \begin{verbatim}
-# built a grid graph (whole space)
+# build a grid graph (whole space) and the laplacian of shape M
 B = grid_incidence(w, w);
-P = speye(w*w, w*w)(find(M(:)),:);
-PB = B*P';
-L = -PB' * PB;
-size(B)
-size(P)
-size(PB)
-size(L)
-[V,D,flag] = eigs(-L, 40, "be");
-flag
-sqrt(diag(D)/D(1,1))'
+P = speye(w*w, w*w)(find(M(:)),:); # binary weights
+PB = B*P';                         # weighted first derivative
+L = -PB' * PB;                     # laplacian matrix (second derivative)
+\end{verbatim}
+
+\begin{verbatim}
+# study the vibration modes of this shape
+[V,D,flag] = eigs(-L, 40, "be");   # compute both ends of the eigensystem
 v1 = P'*V(:,1);
 v2 = P'*V(:,2);
 v3 = P'*V(:,3);
@@ -130,63 +128,63 @@ vm3 = P'*V(:,18);
 vm4 = P'*V(:,17);
 vm5 = P'*V(:,16);
 vm6 = P'*V(:,15);
-max(v1)
-max(v2)
-max(v3)
-max(v4)
-max(v5)
-max(v6)
-1
-max(vm1)
-max(vm2)
-max(vm3)
-1
-min(v1)
-min(v2)
-min(v3)
-min(v4)
-min(v5)
-min(v6)
-1
-min(vm1)
-min(vm2)
-min(vm3)
-imwrite(reshape(255*(v1-min(v1))/(max(v1)-min(v1)),w,w), "marimba_v1.png")
-imwrite(reshape(255*(v2-min(v2))/(max(v2)-min(v2)),w,w), "marimba_v2.png")
-imwrite(reshape(255*(v3-min(v3))/(max(v3)-min(v3)),w,w), "marimba_v3.png")
-imwrite(reshape(255*(v4-min(v4))/(max(v4)-min(v4)),w,w), "marimba_v4.png")
-imwrite(reshape(255*(v5-min(v5))/(max(v5)-min(v5)),w,w), "marimba_v5.png")
-imwrite(reshape(255*(v6-min(v6))/(max(v6)-min(v6)),w,w), "marimba_v6.png")
-imwrite(reshape(255*(vm1-min(vm1))/(max(vm1)-min(vm1)),w,w), "marimba_vm1.png")
-imwrite(reshape(255*(vm2-min(vm2))/(max(vm2)-min(vm2)),w,w), "marimba_vm2.png")
-imwrite(reshape(255*(vm3-min(vm3))/(max(vm3)-min(vm3)),w,w), "marimba_vm3.png")
-iio_write("marimba_v01.tiff", reshape(v1,w,w));
-iio_write("marimba_v02.tiff", reshape(v2,w,w));
-iio_write("marimba_v03.tiff", reshape(v3,w,w));
-iio_write("marimba_v04.tiff", reshape(v4,w,w));
-iio_write("marimba_v05.tiff", reshape(v5,w,w));
-iio_write("marimba_v06.tiff", reshape(v6,w,w));
-iio_write("marimba_v07.tiff", reshape(v7,w,w));
-iio_write("marimba_v08.tiff", reshape(v8,w,w));
-iio_write("marimba_v09.tiff", reshape(v9,w,w));
-iio_write("marimba_v10.tiff", reshape(v10,w,w));
-iio_write("marimba_v11.tiff", reshape(v11,w,w));
-iio_write("marimba_v12.tiff", reshape(v12,w,w));
-iio_write("marimba_v13.tiff", reshape(v13,w,w));
-iio_write("marimba_v14.tiff", reshape(v14,w,w));
-iio_write("marimba_v15.tiff", reshape(v15,w,w));
-iio_write("marimba_v16.tiff", reshape(v16,w,w));
-iio_write("marimba_v17.tiff", reshape(v17,w,w));
-iio_write("marimba_v18.tiff", reshape(v18,w,w));
-iio_write("marimba_v19.tiff", reshape(v19,w,w));
-iio_write("marimba_v20.tiff", reshape(v20,w,w));
-iio_write("marimba_V1.tiff", reshape(vm1,w,w));
-iio_write("marimba_V2.tiff", reshape(vm2,w,w));
-iio_write("marimba_V3.tiff", reshape(vm3,w,w));
-iio_write("marimba_V4.tiff", reshape(vm4,w,w));
-iio_write("marimba_V5.tiff", reshape(vm5,w,w));
-iio_write("marimba_V6.tiff", reshape(vm6,w,w));
+imwrite(reshape(255*(v1-min(v1))/(max(v1)-min(v1)),w,w), "f/marimba_v1.png")
+imwrite(reshape(255*(v2-min(v2))/(max(v2)-min(v2)),w,w), "f/marimba_v2.png")
+imwrite(reshape(255*(v3-min(v3))/(max(v3)-min(v3)),w,w), "f/marimba_v3.png")
+imwrite(reshape(255*(v4-min(v4))/(max(v4)-min(v4)),w,w), "f/marimba_v4.png")
+imwrite(reshape(255*(v5-min(v5))/(max(v5)-min(v5)),w,w), "f/marimba_v5.png")
+imwrite(reshape(255*(v6-min(v6))/(max(v6)-min(v6)),w,w), "f/marimba_v6.png")
+imwrite(reshape(255*(vm1-min(vm1))/(max(vm1)-min(vm1)),w,w), "f/marimba_vm1.png")
+imwrite(reshape(255*(vm2-min(vm2))/(max(vm2)-min(vm2)),w,w), "f/marimba_vm2.png")
+imwrite(reshape(255*(vm3-min(vm3))/(max(vm3)-min(vm3)),w,w), "f/marimba_vm3.png")
+iio_write("f/marimba_v01.tiff", reshape(v1,w,w));
+iio_write("f/marimba_v02.tiff", reshape(v2,w,w));
+iio_write("f/marimba_v03.tiff", reshape(v3,w,w));
+iio_write("f/marimba_v04.tiff", reshape(v4,w,w));
+iio_write("f/marimba_v05.tiff", reshape(v5,w,w));
+iio_write("f/marimba_v06.tiff", reshape(v6,w,w));
+iio_write("f/marimba_v07.tiff", reshape(v7,w,w));
+iio_write("f/marimba_v08.tiff", reshape(v8,w,w));
+iio_write("f/marimba_v09.tiff", reshape(v9,w,w));
+iio_write("f/marimba_v10.tiff", reshape(v10,w,w));
+iio_write("f/marimba_v11.tiff", reshape(v11,w,w));
+iio_write("f/marimba_v12.tiff", reshape(v12,w,w));
+iio_write("f/marimba_v13.tiff", reshape(v13,w,w));
+iio_write("f/marimba_v14.tiff", reshape(v14,w,w));
+iio_write("f/marimba_v15.tiff", reshape(v15,w,w));
+iio_write("f/marimba_v16.tiff", reshape(v16,w,w));
+iio_write("f/marimba_v17.tiff", reshape(v17,w,w));
+iio_write("f/marimba_v18.tiff", reshape(v18,w,w));
+iio_write("f/marimba_v19.tiff", reshape(v19,w,w));
+iio_write("f/marimba_v20.tiff", reshape(v20,w,w));
+iio_write("f/marimba_V1.tiff", reshape(vm1,w,w));
+iio_write("f/marimba_V2.tiff", reshape(vm2,w,w));
+iio_write("f/marimba_V3.tiff", reshape(vm3,w,w));
+iio_write("f/marimba_V4.tiff", reshape(vm4,w,w));
+iio_write("f/marimba_V5.tiff", reshape(vm5,w,w));
+iio_write("f/marimba_V6.tiff", reshape(vm6,w,w));
 \end{verbatim}
+
+\includegraphics[width=0.15\linewidth]{f/marimba_v01.png}\verb+v01+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v02.png}\verb+v02+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v03.png}\verb+v03+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v04.png}\verb+v04+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v05.png}\verb+v05+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v06.png}\verb+v06+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v07.png}\verb+v07+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v08.png}\verb+v08+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v09.png}\verb+v09+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v10.png}\verb+v10+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v11.png}\verb+v11+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v12.png}\verb+v12+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v13.png}\verb+v13+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v14.png}\verb+v14+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v15.png}\verb+v15+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v16.png}\verb+v16+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v17.png}\verb+v17+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v18.png}\verb+v18+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v19.png}\verb+v19+\\
+\includegraphics[width=0.15\linewidth]{f/marimba_v20.png}\verb+v20+\\
 
 \end{document}
 
