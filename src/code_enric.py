@@ -18,21 +18,17 @@ W = diags([alpha]*N3 + [beta]*N3 + [gamma]*N3)
 L = -B.T @ W @ B
 
 ##Calculs éléments propres
-#(D,U) = eigsh(-L, k=500, which='SM')
+#D,U = eigsh(-L, k=500, which='SM')
 D,U = eigh(-L.todense())
-D_ind_full = D.argsort()
-D.sort()
-D_ind_filt = D_ind_full[D > 1e-30]
+U_filt = U.T[D > 1e-30]
 D_filt = D[D > 1e-30]
-
 
 ##Tracés
 num_shown = 8
 
+vv = [ U_filt[i] for i in range(0,num_shown) ]
+
 import matplotlib.pyplot as plt
-
-vv = [ U[:,D_ind_filt[i]] for i in range(0,num_shown) ]
-
 fig, axes = plt.subplots(nrows=num_shown, ncols=1)
 
 idx = 0
@@ -41,12 +37,12 @@ for ax in axes.flat:
 	from math import sqrt
 	v = zeros((N//10,N))
 	v[:,] = vv[idx]
-	im = ax.imshow(v, cmap="bwr")
+	im = ax.imshow(v, cmap="bwr", vmin=-0.1, vmax=0.1)
 	ax.set_xticks([])
 	ax.set_yticks([])
 	ax.set_ylabel(f"φ_{idx}", rotation=0, ha="right")
-	#print(f"λ_{str(idx)} = {N*D[D_ind_filt[idx]]}")
-	print(f"μ_{str(idx)} = {sqrt(D[D_ind_filt[idx]]/D[D_ind_filt[1]])}")
+	#print(f"λ_{str(idx)} = {N*D_filt[idx]}")
+	print(f"μ_{str(idx)} = {sqrt(D_filt[idx]/D_filt[1])}")
 	idx = idx + 1
 
 fig.colorbar(im, ax=axes.ravel().tolist())
