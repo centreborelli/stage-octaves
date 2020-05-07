@@ -1,13 +1,13 @@
 import numpy as np
 import scipy
-import pylab as plt
+#import pylab as plt
 from scipy.linalg import norm, eig
 from scipy.sparse.linalg import eigs
 from scipy.integrate import odeint
 from scipy.linalg import solve
-from mpl_toolkits.mplot3d import Axes3D 
+#from mpl_toolkits.mplot3d import Axes3D 
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+#import matplotlib.animation as animation
 import matplotlib
 
 plt.clf()
