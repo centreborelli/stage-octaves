@@ -82,3 +82,15 @@ for i in range(20):
 μ = [ numpy.sqrt(Df[i] / Df[0]) for i in range(len(Df)) ]
 for i in range(20):
 	print(f"μ_{i} = {μ[i]}")
+
+
+# display the first eigenfunctions using a signed palette
+import matplotlib.pyplot
+matplotlib.pyplot.set_cmap("bwr")  # blue-white-red palette
+for i in range(20):
+	φ = Uf[i].reshape(w,w)
+	matplotlib.pyplot.imshow(φ, vmin=-0.05, vmax=0.05)
+	matplotlib.pyplot.title(f"μ_{i} = {μ[i]}")
+	matplotlib.pyplot.colorbar()
+	matplotlib.pyplot.savefig(f"v_{i:02d}.png")
+	matplotlib.pyplot.clf()
