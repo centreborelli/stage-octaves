@@ -30,7 +30,7 @@ M = image_of_a_disk(0.7,w)
 
 B = grid_incidence(w, w)    
 BM = B @ diags(M.flatten()) # conditions de Dirichlet : on impose 0 à l'extérieur du disque
-L = -BM.T @ BM          # laplavien du domaine M
+L = -BM.T @ BM          # laplacien du domaine M
 
 D,U = eigsh(-L, k=100, which="SM") 
 
