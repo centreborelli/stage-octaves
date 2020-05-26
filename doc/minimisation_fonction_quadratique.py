@@ -16,7 +16,7 @@ b = torch.from_numpy(b)
 
 # Initalisation de x
 
-x = torch.randn(2, 1, requires_grad=True)
+x = torch.randn(b.size(), requires_grad=True)
 
 # Comment choisir précisément le taux d'apprentissage ?
 
