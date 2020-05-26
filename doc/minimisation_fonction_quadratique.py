@@ -18,21 +18,31 @@ b = torch.from_numpy(b)
 
 x = torch.randn(b.size(), requires_grad=True)
 
-# Comment choisir précisément le taux d'apprentissage ?
+# Calcul de la fonction cout
 
-learning_rate = 1e-3
+def loss_fun(x): return (1/2) * ( S @ x ).t() @ ( S @ x ) + b.t() @ x
+
+# Recherche du learning rate
+
+def backtracking_line_search(y,p):
+    alpha = 1/4
+    beta = 1/2
+    t=1
+    while loss_fun(x-t*p) > loss_fun(x) - alpha * t * p.norm() :
+        t = beta * t
+    return t
 
 # Itération
 
 iter_num = 500
 
-def loss_fun(x): return (1/2) * ( S @ x ).t() @ ( S @ x ) + b.t() @ x
-
 for i in range(iter_num):
     loss = loss_fun(x)
     loss.backward()
+    grad_x = x.grad
+    learning_rate = backtracking_line_search(x,grad_x)
     with torch.no_grad():
-        x -= x.grad * learning_rate
+        x -= grad_x * learning_rate
         x.grad.zero_()
 
 # Résultat
