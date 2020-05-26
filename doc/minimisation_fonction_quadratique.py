@@ -26,8 +26,10 @@ learning_rate = 1e-3
 
 iter_num = 500
 
+def loss_fun(x): return (1/2) * ( S @ x ).t() @ ( S @ x ) + b.t() @ x
+
 for i in range(iter_num):
-    loss = (1/2) * ( S @ x ).t() @ ( S @ x ) + b.t() @ x
+    loss = loss_fun(x)
     loss.backward()
     with torch.no_grad():
         x -= x.grad * learning_rate
@@ -35,12 +37,13 @@ for i in range(iter_num):
 
 # Résultat
 
-print(x)
+print('argmin_exp = ',x)
+print('min_exp = ',loss_fun(x))
 
 ## Solution exacte x=-Inv(Transpose(S)S)b
 
 H = (1/195) * np.array( [ [14 , -1] , [-1 , 14] ] , dtype='float32') # Inv(Transpose(S)S)
 H = torch.from_numpy(H)
 x_ex = - H @ b
-print(x_ex)
-
+print('argmin_th = ',x_ex)
+print('min_th = ',loss_fun(x_ex))
