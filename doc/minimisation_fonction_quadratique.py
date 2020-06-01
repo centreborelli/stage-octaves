@@ -28,7 +28,7 @@ def backtracking_line_search(y,p):
     alpha = 1/4
     beta = 1/2
     t=1
-    while loss_fun(x-t*p) > loss_fun(x) - alpha * t * p.norm() :
+    while loss_fun(y-t*p) > loss_fun(y) - alpha * t * p.norm() :
         t = beta * t
     return t
 
@@ -37,8 +37,8 @@ def backtracking_line_search(y,p):
 iter_num = 500
 
 for i in range(iter_num):
-    loss = loss_fun(x)
-    loss.backward()
+    loss = loss_fun(x) # forward pass
+    loss.backward() # backward pass
     grad_x = x.grad
     learning_rate = backtracking_line_search(x,grad_x)
     with torch.no_grad():
