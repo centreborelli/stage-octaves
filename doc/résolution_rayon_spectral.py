@@ -5,6 +5,7 @@ import numpy.linalg
 import torch
 
 theta = np.pi
+n = 4 # Dimension
 
 # La fonction PowerIteration prend en argument une matrice, une prédiction de vecteur propre, un nombre maximum d'itération ainsi qu'une tolérance de précision.
 # Elle renvoit la valeur absolue de la plus grande valeur propre de la matrice et le vecteur propre associé.
@@ -26,13 +27,13 @@ def PowerIteration(v, A, maxIters, tolerance):
 
 # Prédiction
 
-v0 = np.array([[1.],[2.],[3.]])
+v0 = np.random.rand(n,1)
 v0 = torch.from_numpy(v0)
 
 # Fonction de coût
 
 def loss_fun(vM) :
-  lamb, v = PowerIteration(v0 , vM.reshape(3,3), 40, 10e-6)
+  lamb, v = PowerIteration(v0 , vM.reshape(n,n), 40, 10e-6)
   return (theta-lamb)**2
 
 # Recherche du pas
@@ -48,7 +49,7 @@ def backtracking_line_search(y,p):
 # Initialisation de la descente de gradient
 
 iter_num = 500
-vX = np.eye(3).flatten()
+vX = np.eye(n).flatten()
 vX = torch.from_numpy(vX)
 vX.requires_grad = True
 
@@ -65,7 +66,7 @@ for i in range(iter_num):
 
 #Résultat
 
-M = vX.reshape(3,3)
+M = vX.reshape(n,n)
 
 print('argmin =', M)
 
