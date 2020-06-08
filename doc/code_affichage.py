@@ -25,9 +25,9 @@ fig.colorbar(ima,ax=ax1)
 
 I = np.load(f"iteration_num_{i}.npy")
 loss_tab = np.load(f"loss_tab_num_{i}.npy")
-Partiel1 = np.load(f"Partiel1_num_{i}.npy")
-Partiel2 = np.load(f"Partiel2_num_{i}.npy")
-Partiel3 = np.load(f"Partiel3_num_{i}.npy")
+Partiel1 = np.load(f"partiel1_num_{i}.npy")
+Partiel2 = np.load(f"partiel2_num_{i}.npy")
+Partiel3 = np.load(f"partiel3_num_{i}.npy")
 fondamental = np.load(f"fondamental_num_{i}.npy")
 
 ax2 = fig.add_subplot(3,2,2)
