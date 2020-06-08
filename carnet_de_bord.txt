@@ -14,3 +14,6 @@ Carnet de bord du stage :
     
 - premier calcul d'optimisation :
   - calcul de la deuxième partielle d'une ellipse en fonction de l'exentricité
+  
+- premiers calculs avec Pytorch
+  - une erreur intéressante : considérer la différence et pas la différence reative dans la fonction de coup !!
