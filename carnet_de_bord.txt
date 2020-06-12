@@ -22,3 +22,4 @@ Carnet de bord du stage :
   - chercher les poids de l'objet : problème : poids négatifs ; solution, considérer le carré 
   - deux posibilités : laisser tous les degrés libres, où choisir plusieurs paramètres à modifier (ex : raton et épaisseur d'un gong...)
   - il y a beaucoup de solutions, donc l'initialisation est TRÈS importante
+  - sans régularisation, certains poids explosent !!
