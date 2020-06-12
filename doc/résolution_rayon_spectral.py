@@ -64,6 +64,7 @@ for i in range(iter_num):
         vX -= grad_vX * learning_rate
         vX.grad.zero_()
 
+
 #Résultat
 
 M = vX.reshape(n,n)
