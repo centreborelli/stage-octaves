@@ -99,7 +99,7 @@ for ax in axes.flat:
 plt.gcf().subplots_adjust(wspace = 0, hspace = 0.7)
 plt.savefig("fonctions_propres_finales.png")
 
-## Enregistrement des éléments propres initiaux
+'''## Enregistrement des éléments propres initiaux
 
 BM = B @ diags(im_init)
 L = -BM.T @ BM
@@ -129,4 +129,4 @@ for ax in axes.flat:
     idx +=1
 
 plt.gcf().subplots_adjust(wspace = 0, hspace = 0.7)
-plt.savefig("fonctions_propres_intitiales.png")
+plt.savefig("fonctions_propres_intitiales.png")'''
