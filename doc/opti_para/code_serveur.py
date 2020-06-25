@@ -58,12 +58,12 @@ def loss_fun(l) :
 
 ## Fonction de recherche du pas
 def backtracking_line_search(y,p):
-    alpha = 1/4
-    beta = 1/2
-    t=1
-    while loss_fun(y-t*p) > loss_fun(y) - alpha * t * p.norm() :
-        t = beta * t
-    return t
+    #alpha = 1/4
+    #beta = 1/2
+    #t=1
+    #while loss_fun(y-t*p) > loss_fun(y) - alpha * t * p.norm() :
+    #    t = beta * t
+    return 1
 
 ## Initialisation de la descente de gradient
 
