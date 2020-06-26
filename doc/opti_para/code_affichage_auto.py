@@ -32,7 +32,7 @@ for i in range(w):
         if abs(j-y)<Longueur:
             init_table[i,j]=abs(i-y)
 
-sigma = lambda x : 1/(1+torch.exp(-x))
+sigma = lambda x : 1/(1+torch.exp(-10*x))
 
 rect = lambda r : sigma(r-init_table)
 
