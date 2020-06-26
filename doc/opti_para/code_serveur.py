@@ -38,7 +38,7 @@ for i in range(w):
             init_table[i,j]=abs(i-y)
 
 # Fonction d'activation
-sigma = lambda x : 1/(1+torch.exp(-x))
+sigma = lambda x : 1/(1+torch.exp(-10*x))
 
 # Construction du rectangle dans le domaine: l est la demi-largeur du rectangle, c'est l qu'on optimise.
 rect = lambda l : sigma(l-init_table)
@@ -54,7 +54,8 @@ def loss_fun(l) :
         U,S,V = torch.svd(-L)
         S_f = S[S>1e-5]
 
-        return (4 - S_f[-2]/S_f[-1])**2 + (9 - S_f[-3]/S_f[-1])**2
+        return (4 - S_f[-2]/S_f[-1])**2 + (9 - S_f[-3]/S_f[-1])**2 + torch.max(torch.relu(-l),torch.relu(l-a))
+
 
 ## Fonction de recherche du pas
 def backtracking_line_search(y,p):
