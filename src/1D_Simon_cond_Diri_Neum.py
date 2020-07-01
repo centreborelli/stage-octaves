@@ -8,31 +8,26 @@ import scipy.sparse as sp
 from scipy.sparse.linalg import eigsh
 import matplotlib.pyplot as plt
 
+num_shown = 9  # nombres d'éléments propres à afficher
 
-num_shown = 9
+## Conditions de Dirichlet
 
-# Dirichlet
+w = 600  # nombres de noeuds dans le graphe
+B = sp.eye(w-1,w,1) - sp.eye(w-1,w)  # matrice d'incidence pour le graphe ligne
+N = w//5  # on divise la taille pour fixer 1/5 de la corde nulle aux bords
 
-w = 600
-B = sp.eye(w-1,w,1) - sp.eye(w-1,w)
-N = w//5
+A = sp.diags([0]*N + [1]*3*N + [0]*N)  # matrice d'inertie de taille (w,w)
 
+BA = B @ A  
+L = - BM.T @ BM     # matrice du laplacien avec les conditions de Dirichlet
 
-M = sp.diags([0]*N + [1]*3*N + [0]*N)
+Va,Ve = eigsh(-L,k=500, which="SM")  # récupération des éléments propres
 
-BM = B @ M
-
-L = - BM.T @ BM
-
-Va,Ve = eigsh(-L,k=500, which="SM")
-
-Vaf = Va[Va > 1e-10]
-Vef = Ve.T[Va > 1e-10]
+Vaf = Va[Va > 1e-10]    # tri des valeurs propres, on ne garde que les nons nulles
+Vef = Ve.T[Va > 1e-10]  # tri des vecteurs propres associés
 
 fig, axes = plt.subplots(nrows=num_shown, ncols=1)
-
 idx = 0
-
 for ax in axes.flat:
     v = np.zeros((w//10,w))
     v[:,] = Vef[idx]
@@ -42,29 +37,25 @@ for ax in axes.flat:
     m = int(1000*sqrt(Vaf[idx]/Vaf[0]))/1000
     ax.set_ylabel(f"μ_{idx} = {m}", rotation=0, ha="right")
     idx = idx + 1
-
 fig.colorbar(im, ax=axes.ravel().tolist())
 plt.savefig("Dirichlet_1D.png")
 
-# Neuman
+## Conditions de Neumann
 
 w = 601
 B = sp.eye(w-1,w,1) - sp.eye(w-1,w)
 N = (w-1)//5
 
-W = sp.diags([0]*N + [1]*3*N + [0]*N)
+W = sp.diags([0]*N + [1]*3*N + [0]*N)  # matrice des pondérations d'arêtes de taille (w-1,w-1)
 
-L = - B.T @ W @ B
+L = - B.T @ W @ B   # matrice du laplacien
 
 Va,Ve = eigsh(-L,k=500, which="SM")
-
 Vaf = Va[Va > 1e-10]
 Vef = Ve.T[Va > 1e-10]
 
 fig, axes = plt.subplots(nrows=num_shown, ncols=1)
-
 idx = 0
-
 for ax in axes.flat:
     v = np.zeros((w//10,w))
     v[:,] = Vef[idx]
@@ -74,34 +65,28 @@ for ax in axes.flat:
     m = int(1000*sqrt(Vaf[idx]/Vaf[0]))/1000
     ax.set_ylabel(f"μ_{idx} = {m}", rotation=0, ha="right")
     idx = idx + 1
-
 fig.colorbar(im, ax=axes.ravel().tolist())
 plt.savefig("Neumann_1D.png")
 
-# Dirichlet à gauche, Neumann à droite
+## Conditions de Dirichlet à gauche, Neumann à droite
 
 w = 600
-
 B = sp.eye(w-1,w,1) - sp.eye(w-1,w)
 
 N = w//5
-M = sp.diags([0]*N + [1]*3*N + [0]*N)
-
+A = sp.diags([0]*N + [1]*3*N + [0]*N)  # matrice des inerties
 BM = B @ M
 
-W = sp.diags([1]*(4*N-1) + [0]*N)
+W = sp.diags([1]*(4*N-1) + [0]*N)  # matrice des rigidités : les noeuds à gauche de la barre sont indépendants
 
 L = -BM.T @ W @ BM
 
 Va,Ve = eigsh(-L,k=500, which="SM")
-
 Vaf = Va[Va > 1e-10]
 Vef = Ve.T[Va > 1e-10]
 
 fig, axes = plt.subplots(nrows=num_shown, ncols=1)
-
 idx = 0
-
 for ax in axes.flat:
     v = np.zeros((w//10,w))
     v[:,] = Vef[idx]
@@ -111,7 +96,6 @@ for ax in axes.flat:
     m = int(1000*sqrt(Vaf[idx]/Vaf[0]))/1000
     ax.set_ylabel(f"μ_{idx} = {m}", rotation=0, ha="right")
     idx = idx + 1
-
 fig.colorbar(im, ax=axes.ravel().tolist())
 plt.savefig("Mi_Diri_Mi_Neum_1D.png")
 
